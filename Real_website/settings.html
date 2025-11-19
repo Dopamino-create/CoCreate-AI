@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CoCreate | Settings</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="platform.css">
+</head>
+<body>
+
+    <div class="glow-orb orb-1"></div>
+    <div class="glow-orb orb-2"></div>
+
+    <div class="platform-wrapper">
+        
+        <aside class="sidebar-left glass-panel">
+            <div class="logo-area">
+                <a href="platform.html" style="text-decoration:none; color:inherit; display:flex; gap:12px; align-items:center;">
+                    <div class="logo-box">✦</div>
+                    <h2>CoCreate</h2>
+                </a>
+            </div>
+
+            <nav class="menu-group">
+                <div class="menu-title">MENU</div>
+                <a href="platform.html" class="nav-link">
+                    <span class="icon">🏠</span> Home
+                </a>
+                <a href="#" class="nav-link">
+                    <span class="icon">💬</span> Messages
+                </a>
+                <a href="#" class="nav-link">
+                    <span class="icon">👥</span> Community
+                </a>
+            </nav>
+
+            <nav class="menu-group">
+                <div class="menu-title">LIBRARY</div>
+                <a href="settings.html" class="nav-link active">
+                    <span class="icon">⚙️</span> Settings
+                </a>
+            </nav>
+        </aside>
+
+        <main class="main-content settings-container">
+            
+            <header class="settings-header">
+                <h1>Settings</h1>
+                <p>Manage your account preferences and appearance.</p>
+            </header>
+
+            <section class="glass-card setting-card">
+                <div class="card-header">
+                    <div class="icon-square">🎨</div>
+                    <h3>Appearance</h3>
+                </div>
+                
+                <div class="setting-row">
+                    <div class="setting-info">
+                        <h4>Dark Mode</h4>
+                        <p>Switch between light and dark themes.</p>
+                    </div>
+                    
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="theme-toggle"> 
+                        <span class="slider"></span>
+                    </label>
+                    </div>
+            </section>
+
+            <section class="glass-card setting-card">
+                <div class="card-header">
+                    <div class="icon-square">👤</div>
+                    <h3>Account</h3>
+                </div>
+                
+                <div class="setting-row">
+                    <div class="setting-info">
+                        <h4>Email Notifications</h4>
+                        <p>Receive weekly digest emails.</p>
+                    </div>
+                    <label class="toggle-switch">
+                        <input type="checkbox" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+
+                <div class="setting-row">
+                    <div class="setting-info">
+                        <h4>Private Profile</h4>
+                        <p>Only followers can see your posts.</p>
+                    </div>
+                    <label class="toggle-switch">
+                        <input type="checkbox">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+            </section>
+
+            <section class="glass-card setting-card danger-zone">
+                <div class="setting-row">
+                    <div class="setting-info">
+                        <h4 style="color: #EF4444;">Delete Account</h4>
+                        <p>Permanently remove your profile and data.</p>
+                    </div>
+                    <button class="btn-danger">Delete</button>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <script>
+        const toggle = document.getElementById('theme-toggle');
+        const body = document.body;
+
+        // Check if user already enabled dark mode before
+        if(localStorage.getItem('theme') === 'dark') {
+            body.classList.add('dark-mode');
+            toggle.checked = true;
+        }
+
+        toggle.addEventListener('change', () => {
+            if(toggle.checked) {
+                body.classList.add('dark-mode');
+                localStorage.setItem('theme', 'dark');
+            } else {
+                body.classList.remove('dark-mode');
+                localStorage.setItem('theme', 'light');
+            }
+        });
+    </script>
+</body>
+</html>

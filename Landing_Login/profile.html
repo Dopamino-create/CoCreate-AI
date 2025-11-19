@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CoCreate | Profile</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    
+    <div class="layout-grid">
+        
+        <!-- LEFT SIDEBAR (Same as Index) -->
+        <aside class="sidebar-left">
+            <a href="index.html" class="brand">
+                <div class="brand-logo">✦</div>
+                <h1>CoCreate</h1>
+            </a>
+            
+            <nav class="nav-menu">
+                <a href="index.html" class="nav-item">
+                    <span class="icon">🏠</span> 
+                    <span class="label">Home</span>
+                </a>
+                <a href="#" class="nav-item">
+                    <span class="icon">🔍</span> 
+                    <span class="label">Explore</span>
+                </a>
+                <a href="#" class="nav-item">
+                    <span class="icon">⚡</span> 
+                    <span class="label">Activity</span>
+                </a>
+                <!-- Active Class Here -->
+                <a href="profile.html" class="nav-item active">
+                    <span class="icon">👤</span> 
+                    <span class="label">Profile</span>
+                </a>
+            </nav>
+
+            <button class="btn-primary btn-large">
+                <span>+ New Post</span>
+            </button>
+        </aside>
+
+        <!-- CENTER: PROFILE CONTENT -->
+        <main class="feed-container">
+            
+            <!-- Profile Header Card -->
+            <div class="card profile-card">
+                <!-- Banner Image -->
+                <div class="profile-banner">
+                    <img src="https://picsum.photos/seed/nature/800/300" alt="Banner">
+                </div>
+                
+                <div class="profile-details">
+                    <div class="profile-header-row">
+                        <!-- Avatar overlaps banner -->
+                        <img src="https://picsum.photos/seed/me/150" alt="Profile" class="profile-avatar-lg">
+                        <button class="btn-outline">Edit Profile</button>
+                    </div>
+
+                    <div class="profile-info">
+                        <h2>Sarah Jenkins</h2>
+                        <span class="handle">@sarah_creates</span>
+                        <p class="bio">Digital Artist & UI Designer based in Kyoto. 🌸 Designing the future one pixel at a time.</p>
+                        
+                        <div class="profile-stats">
+                            <div class="stat"><strong>1.2k</strong> <span>Posts</span></div>
+                            <div class="stat"><strong>45.2k</strong> <span>Followers</span></div>
+                            <div class="stat"><strong>302</strong> <span>Following</span></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Profile Tabs -->
+                <div class="profile-tabs">
+                    <div class="tab active">Posts</div>
+                    <div class="tab">Media</div>
+                    <div class="tab">Likes</div>
+                </div>
+            </div>
+
+            <!-- Photo Grid (Gallery) -->
+            <div class="gallery-grid">
+                <div class="gallery-item"><img src="https://picsum.photos/seed/art1/300/300" alt="Post"></div>
+                <div class="gallery-item"><img src="https://picsum.photos/seed/art2/300/300" alt="Post"></div>
+                <div class="gallery-item"><img src="https://picsum.photos/seed/art3/300/300" alt="Post"></div>
+                <div class="gallery-item"><img src="https://picsum.photos/seed/art4/300/300" alt="Post"></div>
+                <div class="gallery-item"><img src="https://picsum.photos/seed/art5/300/300" alt="Post"></div>
+                <div class="gallery-item"><img src="https://picsum.photos/seed/art6/300/300" alt="Post"></div>
+            </div>
+
+        </main>
+
+        <!-- RIGHT SIDEBAR (Same as Index) -->
+        <aside class="sidebar-right">
+            <div class="search-bar">
+                <span class="search-icon">🔍</span>
+                <input type="text" placeholder="Search...">
+            </div>
+
+            <div class="card widget-card">
+                <div class="widget-header">
+                    <h3>You might like</h3>
+                </div>
+                <!-- Reuse suggestions from index -->
+                <div class="suggestion-list">
+                    <div class="suggestion-item">
+                        <img src="https://picsum.photos/seed/u8/50" class="avatar-sm">
+                        <div class="suggestion-info">
+                            <h4>Minimalist</h4>
+                            <span>@mini_daily</span>
+                        </div>
+                        <button class="btn-follow">Follow</button>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+    </div>
+</body>
+</html>

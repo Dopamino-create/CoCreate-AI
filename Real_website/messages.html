@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CoCreate | Messages</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="platform.css">
+    
+    <style>
+        /* --- FIXED MESSAGES STYLES (High Contrast) --- */
+        
+        /* 1. Layout Wrapper */
+        .messages-wrapper {
+            display: grid;
+            grid-template-columns: 280px 1fr; 
+            height: 100vh;
+            max-width: 1600px; margin: 0 auto;
+            gap: 20px; padding: 20px;
+        }
+
+        /* 2. Main Container */
+        .chat-interface {
+            display: grid;
+            grid-template-columns: 340px 1fr; 
+            background: #FFFFFF; /* Force White Background */
+            border: 1px solid #E5E7EB;
+            border-radius: var(--radius-xl);
+            overflow: hidden;
+            height: 100%;
+            box-shadow: var(--shadow-soft);
+        }
+
+        /* --- LEFT PANEL: Contact List --- */
+        .contact-list-panel {
+            border-right: 1px solid #E5E7EB;
+            display: flex; flex-direction: column;
+            background: #F9FAFB; /* Light Grey Sidebar */
+        }
+
+        .contact-header { 
+            padding: 25px; 
+            border-bottom: 1px solid #E5E7EB;
+            background: #F9FAFB;
+        }
+        /* FORCE BLACK TEXT */
+        .contact-header h2 { 
+            font-size: 1.2rem; font-weight: 800; margin-bottom: 15px; 
+            color: #111827 !important; 
+        }
+
+        .chat-scroll-area { overflow-y: auto; flex: 1; }
+
+        /* Chat Items */
+        .chat-item {
+            display: flex; gap: 15px; padding: 18px 25px;
+            cursor: pointer; transition: 0.2s;
+            border-left: 3px solid transparent;
+            align-items: center;
+        }
+        .chat-item:hover { background: #E5E7EB; }
+        
+        .chat-item.active { 
+            background: #FFFFFF; 
+            border-left-color: var(--primary); 
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        
+        .chat-avatar { width: 50px; height: 50px; border-radius: 16px; object-fit: cover; }
+        .chat-avatar-wrapper { position: relative; }
+        .status-dot {
+            position: absolute; bottom: -2px; right: -2px;
+            width: 14px; height: 14px; background: #10B981;
+            border: 2px solid white; border-radius: 50%;
+        }
+
+        .chat-info { flex: 1; min-width: 0; }
+        .chat-name-row { display: flex; justify-content: space-between; margin-bottom: 5px; }
+        
+        /* FORCE BLACK NAMES */
+        .chat-name { font-weight: 700; font-size: 0.95rem; color: #111827 !important; }
+        /* FORCE GREY META TEXT */
+        .chat-time { font-size: 0.75rem; color: #6B7280 !important; }
+        .chat-preview { 
+            font-size: 0.85rem; color: #6B7280 !important; 
+            white-space: nowrap; overflow: hidden; text-overflow: ellipsis; 
+        }
+
+        .unread-badge { 
+            background: var(--primary); color: white; font-size: 0.7rem; font-weight: 700;
+            padding: 4px 8px; border-radius: 10px; margin-left: auto; 
+        }
+
+        /* --- RIGHT PANEL: Active Chat --- */
+        .active-chat-panel { 
+            display: flex; flex-direction: column; position: relative; 
+            background: #FFFFFF;
+        }
+        
+        .chat-top-bar {
+            padding: 20px 30px;
+            border-bottom: 1px solid #E5E7EB;
+            display: flex; justify-content: space-between; align-items: center;
+            background: #FFFFFF;
+        }
+        /* FORCE BLACK HEADER */
+        .active-user-info h3 { font-size: 1rem; font-weight: 700; color: #111827 !important; }
+        .active-status-text { font-size: 0.8rem; color: #10B981; font-weight: 600; }
+
+        .messages-area {
+            flex: 1; padding: 30px; overflow-y: auto;
+            display: flex; flex-direction: column; gap: 25px;
+            background: #FFFFFF;
+        }
+
+        .message-row { display: flex; gap: 15px; max-width: 75%; }
+        .message-row.received { align-self: flex-start; }
+        .message-row.sent { align-self: flex-end; flex-direction: row-reverse; }
+
+        /* Bubbles */
+        .msg-bubble {
+            padding: 15px 22px; border-radius: 22px;
+            font-size: 0.95rem; line-height: 1.6;
+            position: relative;
+        }
+        
+        .received .msg-bubble {
+            background: #F3F4F6; 
+            color: #111827 !important; /* Black Text */
+            border-top-left-radius: 4px;
+        }
+        
+        .sent .msg-bubble {
+            background: var(--primary); 
+            color: #FFFFFF !important; /* White Text */
+            border-top-right-radius: 4px;
+            box-shadow: 0 4px 15px var(--primary-glow);
+        }
+
+        .msg-time { font-size: 0.7rem; color: #9CA3AF; margin-top: 8px; text-align: right; }
+        .sent .msg-time { text-align: left; }
+
+        .chat-input-area {
+            padding: 25px 30px;
+            border-top: 1px solid #E5E7EB;
+            background: #FFFFFF;
+            display: flex; gap: 15px; align-items: center;
+        }
+        .attach-btn { font-size: 1.4rem; cursor: pointer; color: #9CA3AF; background: none; border: none; }
+        .attach-btn:hover { color: var(--primary); }
+        
+        .message-input {
+            flex: 1; padding: 14px 24px; border-radius: 50px; border: none;
+            background: #F3F4F6; 
+            color: #111827 !important; /* Dark Text Input */
+            font-family: inherit; outline: none; font-size: 0.95rem;
+        }
+        .message-input::placeholder { color: #9CA3AF; }
+        .message-input:focus { background: #FFFFFF; box-shadow: 0 0 0 2px var(--primary); }
+
+        .send-btn {
+            width: 50px; height: 50px; 
+            background: var(--primary); color: white;
+            border-radius: 50%; border: none; cursor: pointer;
+            display: grid; place-items: center; font-size: 1.2rem;
+            transition: 0.3s;
+            box-shadow: 0 4px 15px var(--primary-glow);
+        }
+
+        /* --- DARK MODE OVERRIDES (High Contrast) --- */
+        @media (prefers-color-scheme: dark) {
+            /* Backgrounds */
+            .chat-interface { background: #18181B; border-color: #27272A; }
+            .contact-list-panel, .contact-header { background: #18181B; border-color: #27272A; }
+            .chat-top-bar, .chat-input-area, .messages-area { background: #18181B; border-color: #27272A; }
+            .active-chat-panel { background: #18181B; }
+
+            /* Text Colors -> FORCE WHITE */
+            .contact-header h2 { color: #FFFFFF !important; }
+            .chat-name { color: #FFFFFF !important; }
+            .active-user-info h3 { color: #FFFFFF !important; }
+            .chat-preview, .chat-time { color: #A1A1AA !important; }
+
+            /* Items */
+            .chat-item:hover { background: #27272A; }
+            .chat-item.active { background: #27272A; border-left-color: #A78BFA; }
+
+            /* Bubbles */
+            .received .msg-bubble { background: #27272A; color: #FFFFFF !important; }
+            .sent .msg-bubble { background: var(--primary); color: #FFFFFF !important; }
+
+            /* Input */
+            .message-input { background: #27272A; color: #FFFFFF !important; }
+            .status-dot { border-color: #18181B; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="glow-orb orb-1"></div>
+    <div class="glow-orb orb-2"></div>
+
+    <div class="messages-wrapper">
+        
+        <aside class="sidebar-left glass-panel">
+            <div class="logo-area">
+                <div class="logo-box">✦</div>
+                <h2>CoCreate</h2>
+            </div>
+
+            <nav class="menu-group">
+                <div class="menu-title">MENU</div>
+                <a href="platform.html" class="nav-link">
+                    <span class="icon">🏠</span> Home
+                </a>
+                <a href="messages.html" class="nav-link active">
+                    <span class="icon">💬</span> Messages
+                    <span class="badge-pill">4</span>
+                </a>
+                <a href="#" class="nav-link">
+                    <span class="icon">👥</span> Community
+                </a>
+            </nav>
+            
+            <nav class="menu-group">
+                <div class="menu-title">LIBRARY</div>
+                <a href="settings.html" class="nav-link">
+                    <span class="icon">⚙️</span> Settings
+                </a>
+            </nav>
+        </aside>
+
+        <main class="chat-interface fade-in">
+            
+            <div class="contact-list-panel">
+                <div class="contact-header">
+                    <h2>Messages</h2>
+                    <div class="glass-input" style="padding: 10px 15px; border-radius: 12px; background:var(--bg-body);">
+                        <span>🔍</span>
+                        <input type="text" placeholder="Search..." style="color:var(--text-main);">
+                    </div>
+                </div>
+
+                <div class="chat-scroll-area">
+                    <div class="chat-item active">
+                        <div class="chat-avatar-wrapper">
+                            <img src="https://picsum.photos/seed/u1/100" class="chat-avatar">
+                            <div class="status-dot"></div>
+                        </div>
+                        <div class="chat-info">
+                            <div class="chat-name-row">
+                                <span class="chat-name">Sarah Jenkins</span>
+                                <span class="chat-time">Now</span>
+                            </div>
+                            <p class="chat-preview" style="color: var(--primary) !important; font-weight: 600;">Typing...</p>
+                        </div>
+                    </div>
+
+                    <div class="chat-item">
+                        <div class="chat-avatar-wrapper">
+                            <img src="https://picsum.photos/seed/u4/100" class="chat-avatar">
+                            <div class="status-dot"></div>
+                        </div>
+                        <div class="chat-info">
+                            <div class="chat-name-row">
+                                <span class="chat-name">Marcus Chen</span>
+                                <span class="chat-time">2m</span>
+                            </div>
+                            <div style="display:flex; justify-content:space-between;">
+                                <p class="chat-preview">Can you send the file?</p>
+                                <span class="unread-badge">2</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="chat-item">
+                        <div class="chat-avatar-wrapper">
+                            <img src="https://picsum.photos/seed/u3/100" class="chat-avatar">
+                            <div class="status-dot status-offline"></div>
+                        </div>
+                        <div class="chat-info">
+                            <div class="chat-name-row">
+                                <span class="chat-name">Design Team</span>
+                                <span class="chat-time">1h</span>
+                            </div>
+                            <p class="chat-preview">David: Let's meet tomorrow.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="active-chat-panel">
+                
+                <header class="chat-top-bar">
+                    <div class="active-user-info">
+                        <img src="https://picsum.photos/seed/u1/100" style="width:40px; height:40px; border-radius:12px;">
+                        <div>
+                            <h3>Sarah Jenkins</h3>
+                            <span class="active-status-text">Online</span>
+                        </div>
+                    </div>
+                    <div class="chat-actions">
+                        <button class="btn-icon-plain">📞</button>
+                        <button class="btn-icon-plain">📹</button>
+                    </div>
+                </header>
+
+                <div class="messages-area">
+                    <div class="message-row received">
+                        <img src="https://picsum.photos/seed/u1/50" style="width:32px; height:32px; border-radius:10px; margin-top:auto;">
+                        <div>
+                            <div class="msg-bubble">Hey! Did you see the update? 🚀</div>
+                            <div class="msg-time">10:23 AM</div>
+                        </div>
+                    </div>
+
+                    <div class="message-row sent">
+                        <div>
+                            <div class="msg-bubble">Yes! The new contrast is much better. Readable text! ✨</div>
+                            <div class="msg-time">10:24 AM</div>
+                        </div>
+                    </div>
+                </div>
+
+                <footer class="chat-input-area">
+                    <button class="attach-btn">📎</button>
+                    <input type="text" class="message-input" placeholder="Type a message...">
+                    <button class="send-btn">➤</button>
+                </footer>
+
+            </div>
+
+        </main>
+    </div>
+
+    <script src="theme.js"></script>
+</body>
+</html>
